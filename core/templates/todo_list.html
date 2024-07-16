@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <title>To-Do List</title>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h1 class="text-2xl font-bold text-center mb-4">To-Do List</h1>
+
+            <form method="POST" class="mb-4">
+                {% csrf_token %}
+                <div class="flex items-center">
+                    <input type="text" name="task" class="flex-grow border rounded p-2 mr-2" placeholder="Add new task">
+                    <button type="submit" class="bg-blue-500 text-white rounded px-4 py-2">Add</button>
+                </div>
+            </form>
+
+            <ul>
+                {% for item in items %}
+                    <li class="flex justify-between items-center bg-gray-100 p-3 my-2 rounded">
+                        <span class="text-lg">{{ item.task }}</span>
+                        <div>
+                            {% if not item.completed %}
+                                <a href="{% url 'complete_todo' item.id %}" class="bg-green-500 text-white px-3 py-1 rounded mr-2">Complete</a>
+                            {% endif %}
+                            <a href="{% url 'delete_todo' item.id %}" class="bg-red-500 text-white px-3 py-1 rounded">Delete</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
